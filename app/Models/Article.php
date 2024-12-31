@@ -9,12 +9,8 @@ class Article extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [
-        'title',
-        'url',
-        'views',
-    ];
+    protected $fillable = ['title', 'url', 'views'];
+
+    // Optionally, you can define the table if it's not using the default "articles"
+    protected $table = 'articles';
 }
