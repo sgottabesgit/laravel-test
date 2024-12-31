@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="bg-gray-50">
     @auth
-        <header class="bg-gray-800 text-white py-2">
-            <div class="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
-                <div>
-                    Logged in as: <strong>{{ Auth::user()->name }}</strong>
+        <!-- Header -->
+        <header class="bg-gray-800 text-white py-4 shadow-md">
+            <div class="max-w-7xl mx-auto flex justify-between items-center px-6">
+                <div class="flex items-center space-x-4">
+                    <span class="font-semibold text-lg">{{ __('Welcome, ') . Auth::user()->name }}</span>
+                    <a href="{{ route('profile.edit') }}" class="text-blue-400 hover:underline">Edit Profile</a>
                 </div>
                 <div>
-                    <a href="{{ route('profile.edit') }}" class="text-blue-400 hover:underline">Edit Profile</a>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit" class="text-red-400 hover:underline ml-4">Logout</button>
@@ -24,26 +26,31 @@
     @endauth
 
     <!-- Back to Dashboard Link -->
-    <div class="mt-6 text-center">
-        <a href="{{ route('dashboard') }}" class="text-blue-500 hover:underline">
+    <div class="text-center my-6">
+        <a href="{{ route('dashboard') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
             Back to Dashboard
         </a>
     </div>
 
-    <h1>Recent Articles</h1>
+    <!-- Articles Section -->
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        <h1 class="text-3xl font-semibold text-center mb-6">Recent Articles</h1>
 
-    @if($articles->count() > 0)
-        <ul>
-            @foreach($articles as $article)
-                <li>
-                    <h2><a href="{{ route('articles.show', $article->id) }}" target="_blank">{{ $article->title }}</a></h2>
-                    <p>Published on: {{ $article->created_at->format('F j, Y') }}</p>
-                    <p>Views: {{ $article->views }}</p>
-                </li>
-            @endforeach
-        </ul>
-    @else
-        <p>No articles available.</p>
-    @endif
+        @if($articles->count() > 0)
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($articles as $article)
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                        <h2 class="text-xl font-bold mb-3">
+                            <a href="{{ route('articles.show', $article->id) }}" class="text-blue-500 hover:underline">{{ $article->title }}</a>
+                        </h2>
+                        <p class="text-gray-600">Published on: {{ $article->created_at->format('F j, Y') }}</p>
+                        <p class="text-gray-600">Views: {{ $article->views }}</p>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-center text-gray-600">No articles available.</p>
+        @endif
+    </div>
 </body>
 </html>
