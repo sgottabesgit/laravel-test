@@ -7,7 +7,7 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <!-- Replace with your .webp logo -->
-                        <img src="{{ asset('images/logo.webp') }}" alt="Your Logo" class="block h-9 w-auto">
+                        <img src="{{ asset('images/logo.webp') }}" alt="Your Logo" class="block h-16 w-auto">
                     </a>
                 </div>
 
