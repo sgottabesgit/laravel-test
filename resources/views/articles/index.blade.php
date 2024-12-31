@@ -23,6 +23,13 @@
         </header>
     @endauth
 
+    <!-- Back to Dashboard Link -->
+    <div class="mt-6 text-center">
+        <a href="{{ route('dashboard') }}" class="text-blue-500 hover:underline">
+            Back to Dashboard
+        </a>
+    </div>
+
     <h1>Recent Articles</h1>
 
     @if($articles->count() > 0)
