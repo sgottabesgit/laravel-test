@@ -46,8 +46,12 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::findOrFail($id);
+
+        // Increment view count
         $article->increment('views');
-        return response()->json($article);
+
+        // Return the article details view with the article data
+        return view('articles.show', ['article' => $article]);
     }
 
     /**
