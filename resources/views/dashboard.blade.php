@@ -12,6 +12,13 @@
                     {{ __("You're logged in!") }}
                 </div>
             </div>
+
+            <!-- Link to Articles page -->
+            <div class="mt-6 text-center">
+                <a href="{{ route('articles.index') }}" class="text-blue-500 hover:underline">
+                    Go to Articles
+                </a>
+            </div>
         </div>
     </div>
 </x-app-layout>
