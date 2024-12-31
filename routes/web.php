@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,27 +18,32 @@ use Illuminate\Support\Facades\Route;
 // Route to show the articles on the home page
 Route::get('/', [ArticleController::class, 'index'])->name('articles.index');
 
-// Additional routes for creating, updating, and deleting articles (if needed)
+// Dashboard Route
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/articles/create', function () {
-    return view('articles.create'); // This view can contain a form to create new articles
-})->name('articles.create');
+// Article-related routes
+Route::middleware('auth')->group(function () {
+    Route::get('/articles/create', function () {
+        return view('articles.create'); // This view can contain a form to create new articles
+    })->name('articles.create');
 
-Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::get('/articles/{id}/edit', function ($id) {
+        $article = \App\Models\Article::findOrFail($id);
+        return view('articles.edit', compact('article'));
+    })->name('articles.edit');
+    Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
+    Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+});
 
-Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+// Profile Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Optional: route to update an article, you'd need a form for that
-Route::get('/articles/{id}/edit', function ($id) {
-    // Fetch the article and pass it to the edit view
-    $article = \App\Models\Article::findOrFail($id);
-    return view('articles.edit', compact('article'));
-})->name('articles.edit');
-
-Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
-
-// Route to delete an article
-Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
-
-// You can add more routes as needed for other parts of your app, such as a dashboard or admin pages.
-
+require __DIR__.'/auth.php';
