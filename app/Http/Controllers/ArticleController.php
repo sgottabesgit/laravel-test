@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -11,18 +10,21 @@ class ArticleController extends Controller
     /**
      * Display a listing of the most recent 15 articles.
      */
-    public function index(): JsonResponse
+    public function index()
     {
+        // Fetch the latest 15 articles
         $articles = Article::orderBy('created_at', 'desc')
             ->take(15)
             ->get();
-        return response()->json($articles);
+
+        // Return the view and pass the articles to it
+        return view('articles.index', ['articles' => $articles]);
     }
 
     /**
      * Store a newly created article in the database.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|max:64',
@@ -41,7 +43,7 @@ class ArticleController extends Controller
     /**
      * Display a specific article and increment its view count.
      */
-    public function show($id): JsonResponse
+    public function show($id)
     {
         $article = Article::findOrFail($id);
         $article->increment('views');
@@ -51,7 +53,7 @@ class ArticleController extends Controller
     /**
      * Update a specific article.
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, $id)
     {
         $request->validate([
             'title' => 'nullable|max:64',
@@ -74,7 +76,7 @@ class ArticleController extends Controller
     /**
      * Remove a specific article from the database.
      */
-    public function destroy($id): JsonResponse
+    public function destroy($id)
     {
         $article = Article::findOrFail($id);
         $article->delete();
