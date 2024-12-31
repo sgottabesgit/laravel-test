@@ -14,7 +14,7 @@
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('images/logo.webp') }}" alt="Your Logo" class="h-12 w-auto">
+                        <img src="{{ asset('images/logo.webp') }}" alt="Your Logo" class="h-16 w-auto">
                     </a>
                 </div>
 
@@ -35,12 +35,7 @@
         </header>
     @endauth
 
-    <!-- Back to Dashboard Link -->
-    <div class="text-center my-6">
-        <a href="{{ route('dashboard') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
-            Back to Dashboard
-        </a>
-    </div>
+   
 
     <!-- Articles Section -->
     <div class="max-w-7xl mx-auto px-6 py-6">
@@ -61,6 +56,13 @@
         @else
             <p class="text-center text-gray-600">No articles available.</p>
         @endif
+    </div>
+
+     <!-- Back to Dashboard Link -->
+     <div class="text-center my-6">
+        <a href="{{ route('dashboard') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+            Back to Dashboard
+        </a>
     </div>
 </body>
 </html>
