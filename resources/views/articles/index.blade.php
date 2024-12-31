@@ -6,6 +6,23 @@
     <title>Articles</title>
 </head>
 <body>
+    @auth
+        <header class="bg-gray-800 text-white py-2">
+            <div class="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
+                <div>
+                    Logged in as: <strong>{{ Auth::user()->name }}</strong>
+                </div>
+                <div>
+                    <a href="{{ route('profile.edit') }}" class="text-blue-400 hover:underline">Edit Profile</a>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="text-red-400 hover:underline ml-4">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </header>
+    @endauth
+
     <h1>Recent Articles</h1>
 
     @if($articles->count() > 0)
