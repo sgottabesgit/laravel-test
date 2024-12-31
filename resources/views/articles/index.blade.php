@@ -11,10 +11,20 @@
         <!-- Header -->
         <header class="bg-gray-800 text-white py-4 shadow-md">
             <div class="max-w-7xl mx-auto flex justify-between items-center px-6">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="{{ route('dashboard') }}">
+                        <img src="{{ asset('images/logo.webp') }}" alt="Your Logo" class="h-12 w-auto">
+                    </a>
+                </div>
+
+                <!-- User Info -->
                 <div class="flex items-center space-x-4">
                     <span class="font-semibold text-lg">{{ __('Welcome, ') . Auth::user()->name }}</span>
                     <a href="{{ route('profile.edit') }}" class="text-blue-400 hover:underline">Edit Profile</a>
                 </div>
+
+                <!-- Logout -->
                 <div>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
