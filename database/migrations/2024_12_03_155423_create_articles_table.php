@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('title', 64); // Title (max 64 characters)
             $table->string('url', 1024); // URL (max 1024 characters)
             $table->unsignedInteger('views')->default(0); // View count (default to 0)
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to users table
             $table->timestamps(); // Created_at and Updated_at
         });
     }
     
-
     /**
      * Reverse the migrations.
      */

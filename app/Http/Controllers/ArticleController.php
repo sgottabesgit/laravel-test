@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Import Auth facade
 
 class ArticleController extends Controller
 {
@@ -12,12 +13,10 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        // Fetch the latest 15 articles
         $articles = Article::orderBy('created_at', 'desc')
             ->take(15)
             ->get();
 
-        // Return the view and pass the articles to it
         return view('articles.index', ['articles' => $articles]);
     }
 
@@ -35,6 +34,7 @@ class ArticleController extends Controller
             'title' => $request->input('title'),
             'url' => $request->input('url'),
             'views' => 0,
+            'user_id' => Auth::id(),  // Associate the article with the authenticated user
         ]);
 
         return response()->json($article, 201); // 201 Created
@@ -46,11 +46,8 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::findOrFail($id);
-
-        // Increment view count
         $article->increment('views');
 
-        // Return the article details view with the article data
         return view('articles.show', ['article' => $article]);
     }
 
@@ -65,6 +62,11 @@ class ArticleController extends Controller
         ]);
 
         $article = Article::findOrFail($id);
+
+        // Ensure that the authenticated user is the author of the article
+        if ($article->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403); // 403 Forbidden
+        }
 
         if ($request->has('title')) {
             $article->title = $request->input('title');
@@ -83,6 +85,12 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
+
+        // Ensure that the authenticated user is the author of the article
+        if ($article->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403); // 403 Forbidden
+        }
+
         $article->delete();
 
         return response()->json(['message' => 'Article deleted successfully']);
