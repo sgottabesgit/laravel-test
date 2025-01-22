@@ -25,10 +25,7 @@ Route::get('/dashboard', function () {
 
 // Article-related routes
 Route::middleware('auth')->group(function () {
-    Route::get('/articles/create', function () {
-        return view('articles.create'); // This view can contain a form to create new articles
-    })->name('articles.create');
-
+    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create'); // Updated to use controller
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
     Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
     Route::get('/articles/{id}/edit', function ($id) {

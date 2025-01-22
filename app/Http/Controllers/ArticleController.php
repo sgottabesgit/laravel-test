@@ -21,6 +21,14 @@ class ArticleController extends Controller
     }
 
     /**
+     * Show the form for creating a new article.
+     */
+    public function create()
+    {
+        return view('articles.create'); // Render the article creation form view
+    }
+
+    /**
      * Store a newly created article in the database.
      */
     public function store(Request $request)
@@ -37,7 +45,7 @@ class ArticleController extends Controller
             'user_id' => Auth::id(),  // Associate the article with the authenticated user
         ]);
 
-        return response()->json($article, 201); // 201 Created
+        return redirect()->route('articles.index')->with('success', 'Article created successfully');
     }
 
     /**
@@ -49,6 +57,21 @@ class ArticleController extends Controller
         $article->increment('views');
 
         return view('articles.show', ['article' => $article]);
+    }
+
+    /**
+     * Show the form for editing a specific article.
+     */
+    public function edit($id)
+    {
+        $article = Article::findOrFail($id);
+
+        // Ensure that the authenticated user is the author of the article
+        if ($article->user_id !== Auth::id()) {
+            return redirect()->route('articles.index')->with('error', 'Unauthorized');
+        }
+
+        return view('articles.edit', compact('article'));
     }
 
     /**

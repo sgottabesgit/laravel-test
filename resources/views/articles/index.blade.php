@@ -33,27 +33,6 @@
                 </div>
             </div>
         </header>
-
-        <!-- Create Article Form -->
-        <div class="max-w-7xl mx-auto px-6 py-6">
-            <h2 class="text-2xl font-semibold mb-4">Create a New Article</h2>
-            <form method="POST" action="{{ route('articles.store') }}" class="space-y-4">
-                @csrf
-                <div>
-                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                    <input type="text" name="title" id="title" class="w-full p-3 border border-gray-300 rounded-md" required>
-                </div>
-                <div>
-                    <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
-                    <input type="url" name="url" id="url" class="w-full p-3 border border-gray-300 rounded-md" required>
-                </div>
-                <div>
-                    <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
-                        Create Article
-                    </button>
-                </div>
-            </form>
-        </div>
     @endauth
 
     <!-- Articles Section -->
@@ -70,18 +49,22 @@
                         <p class="text-gray-600">Published on: {{ $article->created_at->format('F j, Y') }}</p>
                         <p class="text-gray-600">Views: {{ $article->views }}</p>
 
-                        <!-- Conditionally render edit and delete buttons -->
-                        @if (Auth::id() === $article->user_id)
-                            <!-- Edit Button -->
-                            <a href="{{ route('articles.edit', $article->id) }}" class="text-blue-500 hover:underline mt-4 block">Edit</a>
+                        @auth
+                            <!-- Show Edit and Delete buttons only if the logged-in user is the author -->
+                            @if(Auth::id() === $article->user_id)
+                                <div class="mt-4 flex justify-between">
+                                    <!-- Edit button -->
+                                    <a href="{{ route('articles.edit', $article->id) }}" class="text-blue-500 hover:underline">Edit</a>
 
-                            <!-- Delete Button -->
-                            <form action="{{ route('articles.destroy', $article->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:underline mt-2 block">Delete</button>
-                            </form>
-                        @endif
+                                    <!-- Delete button -->
+                                    <form method="POST" action="{{ route('articles.destroy', $article->id) }}" onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                                    </form>
+                                </div>
+                            @endif
+                        @endauth
                     </div>
                 @endforeach
             </div>
@@ -90,8 +73,14 @@
         @endif
     </div>
 
-    <!-- Back to Dashboard Link -->
+    <!-- Back to Dashboard and Create New Article Link -->
     <div class="text-center my-6">
+        @auth
+            <a href="{{ route('articles.create') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+                Create a New Article
+            </a>
+        @endauth
+
         <a href="{{ route('dashboard') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
             Back to Dashboard
         </a>
