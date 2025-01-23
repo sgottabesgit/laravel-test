@@ -50,7 +50,7 @@
                         <p class="text-gray-600">Views: {{ $article->views }}</p>
 
                         @auth
-                            <!-- Show Edit and Delete buttons only if the logged-in user is the author -->
+                            <!-- Conditionally render buttons if the logged-in user is the author -->
                             @if(Auth::id() === $article->user_id)
                                 <div class="mt-4 flex justify-between">
                                     <!-- Edit button -->
