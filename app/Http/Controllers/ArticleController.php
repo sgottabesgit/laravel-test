@@ -107,15 +107,20 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $article = Article::findOrFail($id);
+        // Find the article
+        $article = Article::find($id);
 
-        // Ensure that the authenticated user is the author of the article
-        if ($article->user_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403); // 403 Forbidden
+        // If the article exists, delete it
+        if ($article) {
+            $article->delete();
+
+            // Redirect with a success message
+            return redirect()->route('articles.index')
+                             ->with('message', 'Article deleted successfully');
         }
 
-        $article->delete();
-
-        return response()->json(['message' => 'Article deleted successfully']);
+        // If the article isn't found, redirect back with an error message
+        return redirect()->route('articles.index')
+                         ->with('error', 'Article not found');
     }
 }
