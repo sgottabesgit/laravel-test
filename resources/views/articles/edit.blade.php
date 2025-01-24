@@ -28,12 +28,6 @@
             </div>
 
             <div>
-                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea id="description" name="description" rows="4" required
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{ old('description', $article->description) }}</textarea>
-            </div>
-
-            <div>
                 <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
                 <input type="url" id="url" name="url" value="{{ old('url', $article->url) }}" required
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
