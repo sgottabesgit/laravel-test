@@ -1,3 +1,5 @@
+{{-- resources/views/layouts/app.blade.php --}}
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -29,7 +31,7 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                @yield('content') <!-- Changed from $slot to @yield('content') -->
             </main>
         </div>
     </body>
