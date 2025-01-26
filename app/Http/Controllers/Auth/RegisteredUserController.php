@@ -45,6 +45,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended(route('/'));
+        return redirect()->intended(route('articles.index'));
     }
 }
