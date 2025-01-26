@@ -78,29 +78,32 @@ class ArticleController extends Controller
      * Update a specific article.
      */
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'nullable|max:64',
-            'url' => 'nullable|url|max:1024',
-        ]);
+{
+    $request->validate([
+        'title' => 'nullable|max:64',
+        'url' => 'nullable|url|max:1024',
+    ]);
 
-        $article = Article::findOrFail($id);
+    $article = Article::findOrFail($id);
 
-        // Ensure that the authenticated user is the author of the article
-        if ($article->user_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403); // 403 Forbidden
-        }
-
-        if ($request->has('title')) {
-            $article->title = $request->input('title');
-        }
-        if ($request->has('url')) {
-            $article->url = $request->input('url');
-        }
-        $article->save();
-
-        return response()->json($article);
+    // Ensure that the authenticated user is the author of the article
+    if ($article->user_id !== Auth::id()) {
+        return redirect()->route('articles.index')->with('error', 'Unauthorized');
     }
+
+    // Update the article's fields only if they are provided
+    if ($request->has('title')) {
+        $article->title = $request->input('title');
+    }
+    if ($request->has('url')) {
+        $article->url = $request->input('url');
+    }
+    $article->save();
+
+    // Redirect back to the index page with a success message
+    return redirect()->route('articles.index')->with('success', 'Article updated successfully.');
+}
+
 
     /**
      * Remove a specific article from the database.
