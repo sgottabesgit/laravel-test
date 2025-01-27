@@ -45,6 +45,7 @@ class ArticleController extends Controller
             'user_id' => Auth::id(),  // Associate the article with the authenticated user
         ]);
 
+        // Flash message for successful creation
         return redirect()->route('articles.index')->with('success', 'Article created successfully');
     }
 
@@ -97,6 +98,7 @@ class ArticleController extends Controller
             'url' => $request->input('url'),
         ]);
 
+        // Flash message for successful update
         return redirect()->route('articles.index')->with('success', 'Article updated successfully');
     }
 
@@ -114,9 +116,11 @@ class ArticleController extends Controller
 
         if ($article) {
             $article->delete();
-            return redirect()->route('articles.index')->with('message', 'Article deleted successfully');
+            // Flash message for successful deletion
+            return redirect()->route('articles.index')->with('success', 'Article deleted successfully');
         }
 
+        // Flash message for article not found
         return redirect()->route('articles.index')->with('error', 'Article not found');
     }
 }

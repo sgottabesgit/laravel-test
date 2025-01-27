@@ -7,6 +7,19 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50">
+    <!-- Flash Messages -->
+    @if(session('success'))
+        <div class="bg-green-500 text-white p-4 mb-4 rounded">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-500 text-white p-4 mb-4 rounded">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- Authenticated User Navigation -->
     @auth
         <!-- Header -->
