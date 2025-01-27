@@ -7,6 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50">
+    <!-- Authenticated User Navigation -->
     @auth
         <!-- Header -->
         <header class="bg-gray-800 text-white py-4 shadow-md">
@@ -34,6 +35,23 @@
             </div>
         </header>
     @endauth
+
+    <!-- Guest Navigation -->
+    @guest
+        <header class="bg-gray-800 text-white py-4 shadow-md">
+            <div class="max-w-7xl mx-auto flex justify-between items-center px-6">
+                <div class="flex items-center">
+                    <a href="{{ route('dashboard') }}">
+                        <img src="{{ asset('images/logo.webp') }}" alt="Your Logo" class="h-16 w-auto">
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ route('login') }}" class="text-blue-400 hover:underline">Login</a>
+                    <a href="{{ route('register') }}" class="text-blue-400 hover:underline">Register</a>
+                </div>
+            </div>
+        </header>
+    @endguest
 
     <!-- Articles Section -->
     <div class="max-w-7xl mx-auto px-6 py-6">
