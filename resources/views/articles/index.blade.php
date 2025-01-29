@@ -105,14 +105,14 @@
     </div>
 
     <!-- Back to Dashboard and Create New Article Link -->
-    <div class="text-center my-6">
+    <div class="text-center space-y-4 py-6">
         @auth
-            <a href="{{ route('articles.create') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+            <a href="{{ route('articles.create') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition inline-block">
                 Create a New Article
             </a>
         @endauth
 
-        <a href="{{ route('dashboard') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+        <a href="{{ route('dashboard') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition inline-block">
             Back to Dashboard
         </a>
     </div>
