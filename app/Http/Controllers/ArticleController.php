@@ -33,16 +33,21 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|max:64',
-            'url' => 'required|url|max:1024',
+            'url' => 'required|max:1024',
         ]);
 
-        $article = Article::create([
-            'title' => $request->input('title'),
-            'url' => $request->input('url'),
+        // Ensure the URL starts with http:// or https://
+        if (!preg_match("~^(?:f|ht)tps?://~i", $validated['url'])) {
+            $validated['url'] = 'https://' . $validated['url'];
+        }
+
+        Article::create([
+            'title' => $validated['title'],
+            'url' => $validated['url'],
             'views' => 0,
-            'user_id' => Auth::id(),  // Associate the article with the authenticated user
+            'user_id' => Auth::id(),
         ]);
 
         // Flash message for successful creation
@@ -80,9 +85,9 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|max:64',
-            'url' => 'required|url|max:1024',
+            'url' => 'required|max:1024',
         ]);
 
         $article = Article::findOrFail($id);
@@ -92,10 +97,14 @@ class ArticleController extends Controller
             return redirect()->route('articles.index')->with('error', 'Unauthorized');
         }
 
-        // Update the article's fields
+        // Ensure the URL starts with http:// or https://
+        if (!preg_match("~^(?:f|ht)tps?://~i", $validated['url'])) {
+            $validated['url'] = 'https://' . $validated['url'];
+        }
+
         $article->update([
-            'title' => $request->input('title'),
-            'url' => $request->input('url'),
+            'title' => $validated['title'],
+            'url' => $validated['url'],
         ]);
 
         // Flash message for successful update

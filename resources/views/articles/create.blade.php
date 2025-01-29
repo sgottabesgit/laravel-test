@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Article</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        function ensureHttps(input) {
+            let value = input.value.trim();
+            if (value && !/^https?:\/\//i.test(value)) {
+                input.value = 'https://' + value;
+            }
+        }
+    </script>
 </head>
 <body class="bg-gray-50">
     @auth
-        <!-- Header (same as index) -->
         <header class="bg-gray-800 text-white py-4 shadow-md">
             <div class="max-w-7xl mx-auto flex justify-between items-center px-6">
                 <div class="flex items-center">
@@ -33,18 +40,15 @@
     <div class="max-w-7xl mx-auto px-6 py-6">
         <h1 class="text-3xl font-semibold text-center mb-6">Create New Article</h1>
 
-        <!-- Flash Success Message -->
         @if (session('success'))
             <div class="bg-green-500 text-white p-4 rounded-lg mb-6">
                 {{ session('success') }}
             </div>
         @endif
 
-        <!-- Form -->
         <form action="{{ route('articles.store') }}" method="POST" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
             @csrf
 
-            <!-- Title -->
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
                 <input type="text" name="title" id="title" value="{{ old('title') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required maxlength="64">
@@ -53,16 +57,14 @@
                 @enderror
             </div>
 
-            <!-- URL -->
             <div class="mb-4">
                 <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
-                <input type="url" name="url" id="url" value="{{ old('url') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required maxlength="1024">
+                <input type="url" name="url" id="url" value="{{ old('url') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required maxlength="1024" onblur="ensureHttps(this)">
                 @error('url')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Create Article</button>
         </form>
     </div>
